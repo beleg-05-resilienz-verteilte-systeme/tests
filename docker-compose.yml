@@ -1,0 +1,33 @@
+version: '3.0'
+
+services:
+  test:
+    build: 
+      context: ./test
+    container_name: test-app
+    ports:
+      - "80:8000"
+
+  circuit_breaker:
+    build: 
+      context: ./circuit_breaker
+    container_name: circuit_breaker-app
+    ports:
+      - "81:8000"
+    environment:
+      - EXTERNAL_SERVICE_URL=http://test-app:8000/
+      - MAX_FAILURES=3
+      - RESET_TIMEOUT=10
+
+  retry-muster:
+    build: 
+      context: ./retry-muster
+    container_name: retry-muster-app
+    ports:
+      - "82:8000"
+    environment:
+      - EXTERNAL_SERVICE_URL=http://test-app:8000/
+
+networks:
+  default:
+    name: test-network
