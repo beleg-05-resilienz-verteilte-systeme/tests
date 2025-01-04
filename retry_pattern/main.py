@@ -2,6 +2,7 @@ import os
 import logging
 import requests
 
+from requests.exceptions import HTTPError
 from fastapi import FastAPI, HTTPException
 from tenacity import (
     retry, 
@@ -38,16 +39,8 @@ def fetch_data():
 
 @app.get("/get-data")
 def get_data():
-    # try:
     data = fetch_data()
     return {
-        "status_code": 200,
         "success": True,
         "data": data
     }
-    
-    # except RetryError as e:
-    #     raise RetryError(f"Failed after retries: {str(e)}")
-
-    # except Exception as e:
-    #     raise HTTPException(status_code = 503, detail=f"Failed after retries: {str(e)}")

@@ -17,7 +17,7 @@ circuit_breaker = pybreaker.CircuitBreaker(
 # Externer Service zum Simulieren eines Fehlers
 EXTERNAL_SERVICE_URL = os.getenv("EXTERNAL_SERVICE_URL", "http://localhost:80")
 
-@app.get("/get-data")
+@app.get("/get-data/")
 def get_data():
   try:
     response = circuit_breaker.call(requests.get, EXTERNAL_SERVICE_URL)

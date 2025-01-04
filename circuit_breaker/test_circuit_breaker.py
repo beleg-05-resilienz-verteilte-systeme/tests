@@ -18,7 +18,7 @@ class TestCircuitBreaker(unittest.TestCase):
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = mock_response
         
-        response = self.client.get("/get-data")
+        response = self.client.get("/get-data/")
         response_data = response.json()
 
         self.assertEqual(response.status_code, 200)
@@ -32,10 +32,10 @@ class TestCircuitBreaker(unittest.TestCase):
 
         # Simulate multiple failures to trip the circuit breaker
         for _ in range(self.circuit_breaker.fail_max):
-            self.client.get("/get-data")
+            self.client.get("/get-data/")
         
         # with self.assertRaises(HTTPExceptio) as context:
-        response = self.client.get("/get-data")
+        response = self.client.get("/get-data/")
 
         self.assertEqual(response.status_code, 503)
 
@@ -46,7 +46,7 @@ class TestCircuitBreaker(unittest.TestCase):
 
         # Simulate multiple failures
         for _ in range(self.circuit_breaker.fail_max):
-            self.client.get("/get-data")
+            self.client.get("/get-data/")
 
         # Wait for the reset timeout
         time.sleep(self.circuit_breaker.reset_timeout)
@@ -57,7 +57,7 @@ class TestCircuitBreaker(unittest.TestCase):
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = mock_response
 
-        response = self.client.get("/get-data")
+        response = self.client.get("/get-data/")
         response_data = response.json()
 
         self.assertEqual(response.status_code, 200)

@@ -18,7 +18,7 @@ class TestRetryPattern(unittest.TestCase):
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = { "message": "Success" }
 
-        response = self.client.get("/get-data")
+        response = self.client.get("/get-data/")
         response_data = response.json()
 
         self.assertEqual(response.status_code, 200)
@@ -41,7 +41,7 @@ class TestRetryPattern(unittest.TestCase):
         effects.append(mock_get_success)
         mock_get.side_effect = effects
 
-        response = self.client.get("/get-data")
+        response = self.client.get("/get-data/")
         response_data = response.json()
 
         self.assertEqual(response.status_code, 200)
@@ -55,6 +55,6 @@ class TestRetryPattern(unittest.TestCase):
         mock_get.side_effect = HTTPException(status_code = 500, detail = "Internal Server Error")
 
         with self.assertRaises(RetryError):
-            self.client.get("/get-data")
+            self.client.get("/get-data/")
 
         self.assertEqual(mock_get.call_count, self.stop_after_attempt)
