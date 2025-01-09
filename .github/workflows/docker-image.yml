@@ -13,6 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    # Step 1: Check out the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Build Docker images
+    - name: Build circuit_breaker app
+      run: |
+        docker build -t circuit_breaker:latest ./circuit_breaker
+        docker build -t fallback_strategy:latest ./fallback_strategy
+        docker build -t retry_pattern:latest ./retry_pattern
+
+    # Step 3: Run apps
+    - name: Run circuit_breaker app
+      run: |
+        docker run -d -p 80:8000 --name circuit_breaker-app circuit_breaker:latest
+
+    - name: Run fallback_strategy app
+      run: |
+        docker run -d -p 80:8000 --name fallback_strategy-app fallback_strategy:latest
+
+    - name: Run retry_pattern app
+      run: |
+        docker run -d -p 80:8000 --name retry_pattern-app retry_pattern:latest
