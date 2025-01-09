@@ -1,0 +1,80 @@
+= Fallback Strategy Beispiel
+
+Ein Beispiel zur Demonstration der Fallback-Strategie. Dieses Programm nutzt Umgebungsvariablen, um die URL eines externen Services zu definieren, und bietet alternative Fallback-Daten, wenn der primäre Service nicht erreichbar ist oder Fehler zurückgibt.
+
+== Bezeichnung des Beispiels
+
+Fallback Strategy: Bereitstellung alternativer Daten bei einem Serviceausfall.
+
+== Beschreibung des Beispiels
+
+Das Programm versucht, Daten von einem externen Service abzurufen, dessen URL durch die Umgebungsvariable `EXTERNAL_SERVICE_URL` definiert wird (Standard: `http://localhost:80`). Wenn der externe Service nicht verfügbar ist oder Fehler zurückgibt, liefert das Programm eine vordefinierte Liste von Fallback-Daten (`FALLBACK_DATA`), um sicherzustellen, dass eine Antwort bereitgestellt wird.
+
+Die Fallback-Daten enthalten eine Liste von Büchern mit den folgenden Feldern:
+* `title`: Titel des Buches
+* `author`: Autor des Buches
+* `year`: Veröffentlichungsjahr
+
+Die URL des externen Services kann durch Setzen der Umgebungsvariablen `EXTERNAL_SERVICE_URL` angepasst werden.
+
+== Befehle zum Bauen des Docker-Images und zum Starten des Containers
+
+=== Docker Image Bauen
+
+[source,bash]
+----
+docker build -t fallback_strategy .
+----
+
+=== Docker Container Starten
+
+[source,bash]
+----
+docker run -d -p 82:8000 --name fallback_strategy_app \
+  -e EXTERNAL_SERVICE_URL="http://example.com" \
+  fallback_strategy
+----
+
+== Beispiele für API-Aufrufe
+
+**Erfolgreiche Anfrage**  
+   Wenn der externe Service verfügbar ist und gültige Daten liefert, gibt das Programm die Daten des externen Services zurück:
+   
+[source,bash]
+----
+curl -X GET http://localhost:82/get-data/
+----
+
+   Beispielantwort:
+
+[source,json]
+----
+{
+    "success": true,
+    "data": [ "…" ] // Daten des externen Services
+}
+----
+
+**Fallback-Daten verwenden**  
+Wenn der externe Service nicht verfügbar ist oder Fehler zurückgibt, liefert das Programm die vordefinierten Fallback-Daten:
+
+[source,bash]
+----
+curl -X GET http://localhost:82/get-data/
+----
+
+Beispielantwort:
+
+[source,json]
+----
+{
+    "success": false,
+    "data": [
+        {"title": "Lorem Ipsum: The Beginning", "author": "John Doe", "year": 2020},
+        {"title": "Dolor Sit Amet", "author": "Jane Smith", "year": 2019},
+        {"title": "Consectetur Adipiscing Elit", "author": "Alice Johnson", "year": 2021},
+        {"title": "Sed Do Eiusmod", "author": "Bob Brown", "year": 2018},
+        {"title": "Tempor Incididunt", "author": "Charlie Davis", "year": 2022}
+    ]
+}
+----

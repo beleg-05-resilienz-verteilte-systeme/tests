@@ -1,0 +1,81 @@
+= Retry Pattern Beispiel
+
+Ein Beispiel zur Demonstration des Retry-Patterns. Dieses Programm verwendet `tenacity`, um fehlgeschlagene Anfragen an einen externen Service mehrfach zu wiederholen, bevor es aufgibt.
+
+== Bezeichnung des Beispiels
+
+Retry Pattern: Automatische Wiederholungslogik für externe Anfragen.
+
+== Beschreibung des Beispiels
+
+Das Programm sendet HTTP-Anfragen an einen externen Service (`EXTERNAL_SERVICE_URL`). Wenn die Anfrage fehlschlägt (z. B. aufgrund eines Netzwerkfehlers oder eines Serverfehlers), wird die Anfrage automatisch wiederholt. Die Anzahl der Wiederholungen und der Wartezeit zwischen den Versuchen können über Umgebungsvariablen konfiguriert werden.
+
+### Konfigurierbare Umgebungsvariablen
+
+* `EXTERNAL_SERVICE_URL`: Die URL des externen Services, der aufgerufen werden soll (Pflichtvariable).
+* `STOP_AFTER_ATTEMPT`: Maximale Anzahl der Wiederholungsversuche (Standard: 3).
+* `WAIT_FIXED`: Wartezeit in Sekunden zwischen den Wiederholungsversuchen (Standard: 1).
+
+### Ablauf
+
+1. Die Funktion `fetch_data` versucht, Daten vom externen Service abzurufen.
+2. Wenn die Anfrage fehlschlägt (z. B. durch `HTTPError`), wird die Anfrage gemäß den konfigurierten Wiederholungsparametern erneut gesendet.
+3. Nach der maximalen Anzahl der Wiederholungen wird ein Fehler zurückgegeben.
+
+== Befehle zum Bauen des Docker-Images und zum Starten des Containers
+
+=== Docker Image Bauen
+
+[source,bash]
+----
+docker build -t retry_pattern .
+----
+
+=== Docker Container Starten
+
+[source,bash]
+----
+docker run -d -p 83:8000 --name retry_pattern_app \
+  -e EXTERNAL_SERVICE_URL="http://example.com" \
+  -e STOP_AFTER_ATTEMPT=5 \
+  -e WAIT_FIXED=2 \
+  retry_pattern
+----
+
+== Beispiele für API-Aufrufe
+
+**Erfolgreiche Anfrage**  
+   Wenn der externe Service verfügbar ist und gültige Daten liefert, gibt das Programm die Daten des externen Services zurück:
+   
+[source,bash]
+----
+curl -X GET http://localhost:83/get-data
+----
+
+   Beispielantwort:
+
+[source,json]
+----
+{
+    "success": true,
+    "data": { "…" }
+}
+----
+
+**Wiederholungen und Fehlschlag**  
+Wenn der externe Service nicht verfügbar ist, versucht das Programm die Anfrage gemäß den definierten Wiederholungsparametern zu wiederholen. Nach Erreichen der maximalen Anzahl von Versuchen wird ein Fehler zurückgegeben:
+
+Beispielanfrage:
+[source,bash]
+----
+curl -X GET http://localhost:83/get-data
+----
+
+Beispielantwort:
+
+[source,json]
+----
+{
+    "detail": "Failed to fetch data after retrying"
+}
+----
