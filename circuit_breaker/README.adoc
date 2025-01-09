@@ -1,0 +1,88 @@
+= Circuit Breaker Beispiel
+
+Ein Beispiel zur Demonstration des Circuit-Breaker-Patterns. Das Programm nutzt `pybreaker`, um Anfragen an einen externen Service zu schützen. Wenn der Service zu viele Fehler zurückgibt, blockiert der Circuit Breaker weitere Anfragen für einen festgelegten Zeitraum.
+
+== Bezeichnung des Beispiels
+
+Circuit Breaker: Schutz vor wiederholten Fehlern bei Serviceaufrufen.
+
+== Beschreibung des Beispiels
+
+Das Programm sendet HTTP-Anfragen an einen externen Service. Mithilfe von `pybreaker` wird überwacht, wie oft Fehler bei diesen Anfragen auftreten. Überschreiten die Fehler eine definierte Grenze (`MAX_FAILURES`), wird der Circuit Breaker aktiv und blockiert weitere Anfragen für die festgelegte Zeitspanne (`RESET_TIMEOUT`).
+
+Das Verhalten des Programms wird durch folgende Umgebungsvariablen gesteuert:
+
+* `MAX_FAILURES`: Maximale Anzahl zulässiger Fehler, bevor der Circuit Breaker aktiv wird (Standard: 3).
+* `RESET_TIMEOUT`: Zeit in Sekunden, nach der der Circuit Breaker zurückgesetzt wird (Standard: 10).
+* `EXTERNAL_SERVICE_URL`: URL des externen Services (Standard: `http://localhost:81`).
+
+== Befehle zum Bauen des Docker-Images und zum Starten des Containers
+
+=== Docker Image Bauen
+
+[source,bash]
+----
+docker build -t circuit_breaker .
+----
+
+=== Docker Container Starten
+
+[source,bash]
+----
+docker run -d -p 8000:8000 --name circuit_breaker_app -e MAX_FAILURES=5 -e RESET_TIMEOUT=15 -e EXTERNAL_SERVICE_URL="http://example.com" circuit_breaker
+----
+
+== Beispiele für API-Aufrufe
+
+1. **Erfolgreiche Anfrage**  
+   Wenn der externe Service verfügbar ist, gibt das Programm die Antwort des Services zurück:
+   
+[source,bash]
+----
+curl -X GET http://localhost:81/get-data/
+----
+
+Beispielantwort:
+
+[source,json]
+----
+{
+    "success": true,
+    "data": { ... }
+}
+----
+
+2. **Fehler bei externer Anfrage**  
+Wenn die Anfrage an den externen Service fehlschlägt, wird eine entsprechende Fehlermeldung zurückgegeben:
+
+[source,bash]
+----
+curl -X GET http://localhost:8000/get-data/
+----
+
+Beispielantwort:
+
+[source,json]
+----
+{
+    "detail": "Failed to get test data: …"
+}
+----
+
+3. **Circuit Breaker aktiv**  
+   Falls der Circuit Breaker den Zustand "OPEN" erreicht hat, wird die Anfrage blockiert und eine Fehlermeldung zurückgegeben:
+
+   
+[source,bash]
+----
+curl -X GET http://localhost:81/get-data/
+----
+
+Beispielantwort:
+
+[source,json]
+----
+{
+    "detail":"Circuit breaker active: Failures threshold reached, circuit breaker opened"
+}
+----
