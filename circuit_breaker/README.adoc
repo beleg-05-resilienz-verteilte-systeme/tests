@@ -29,7 +29,7 @@ docker build -t circuit_breaker .
 
 [source,bash]
 ----
-docker run -d -p 8000:8000 --name circuit_breaker_app -e MAX_FAILURES=5 -e RESET_TIMEOUT=15 -e EXTERNAL_SERVICE_URL="http://example.com" circuit_breaker
+docker run -d -p 81:8000 --name circuit_breaker-app -e MAX_FAILURES=5 -e RESET_TIMEOUT=15 -e EXTERNAL_SERVICE_URL="http://example.com" circuit_breaker
 ----
 
 == Beispiele für API-Aufrufe
