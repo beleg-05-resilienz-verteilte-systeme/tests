@@ -48,7 +48,7 @@ Beispielantwort:
 ----
 {
     "success": true,
-    "data": { ... }
+    "data": { "..." }
 }
 ----
 
