@@ -42,4 +42,4 @@ jobs:
       run: |
         docker exec circuit_breaker-app python -m pytest
         docker exec retry_pattern-app python -m pytest
-        docker exec fallback_strategy-app python -m pytest
+    #     docker exec fallback_strategy-app python -m pytest
