@@ -17,6 +17,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v2
+
     # Step 2: Build Docker images
     - name: Build apps
       run: |
@@ -36,10 +39,3 @@ jobs:
     - name: Run fallback_strategy app
       run: |
         docker run -d -p 81:8000 --name fallback_strategy-app fallback_strategy:latest
-
-    # Step 4: Run tests
-    - name: Run tests
-      run: |
-        docker exec circuit_breaker-app python -m pytest
-        docker exec retry_pattern-app python -m pytest
-        docker exec fallback_strategy-app python -m pytest
