@@ -34,7 +34,7 @@ docker run -d -p 8000:8000 --name circuit_breaker_app -e MAX_FAILURES=5 -e RESET
 
 == Beispiele für API-Aufrufe
 
-1. **Erfolgreiche Anfrage**  
+**Erfolgreiche Anfrage**  
    Wenn der externe Service verfügbar ist, gibt das Programm die Antwort des Services zurück:
    
 [source,bash]
@@ -52,7 +52,7 @@ Beispielantwort:
 }
 ----
 
-2. **Fehler bei externer Anfrage**  
+**Fehler bei externer Anfrage**  
 Wenn die Anfrage an den externen Service fehlschlägt, wird eine entsprechende Fehlermeldung zurückgegeben:
 
 [source,bash]
@@ -69,7 +69,7 @@ Beispielantwort:
 }
 ----
 
-3. **Circuit Breaker aktiv**  
+**Circuit Breaker aktiv**  
    Falls der Circuit Breaker den Zustand "OPEN" erreicht hat, wird die Anfrage blockiert und eine Fehlermeldung zurückgegeben:
 
    
