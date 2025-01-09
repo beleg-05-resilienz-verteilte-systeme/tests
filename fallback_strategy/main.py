@@ -4,14 +4,14 @@ from fastapi.responses import JSONResponse
 import logging
 import requests
 
-from requests.exceptions import HTTPError
+import os
 
 logging.basicConfig(datefmt='%Y-%m-%d %H:%M:%S %z', level=logging.INFO)
 logger = logging.getLogger()
 
 app = FastAPI()
 
-EXTERNAL_SERVICE_URL = "http://localhost:8000/test-data"
+EXTERNAL_SERVICE_URL = os.getenv("EXTERNAL_SERVICE_URL", "http://localhost:80")
 
 FALLBACK_DATA = [
     {"title": "Lorem Ipsum: The Beginning", "author": "John Doe", "year": 2020},
