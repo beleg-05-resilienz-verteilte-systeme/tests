@@ -1,13 +1,6 @@
 version: '3.0'
 
 services:
-  test:
-    build: 
-      context: ./test
-    container_name: test-app
-    ports:
-      - "80:8000"
-
   circuit_breaker:
     build: 
       context: ./circuit_breaker
@@ -21,8 +14,8 @@ services:
 
   retry-muster:
     build: 
-      context: ./retry-muster
-    container_name: retry-muster-app
+      context: ./retry_pattern
+    container_name: retry_pattern-app
     ports:
       - "82:8000"
     environment:
