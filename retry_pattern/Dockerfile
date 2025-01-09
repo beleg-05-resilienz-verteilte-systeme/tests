@@ -9,7 +9,7 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Anwendungscode kopieren
-COPY main.py main.py
+COPY . .
 
 # Port für FastAPI
 EXPOSE 8000

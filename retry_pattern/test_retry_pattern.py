@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from fastapi import HTTPException
 from tenacity import RetryError
 
-from retry_pattern import main
+from . import main
 
 class TestRetryPattern(unittest.TestCase):
     

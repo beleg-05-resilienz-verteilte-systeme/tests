@@ -2,7 +2,7 @@ import time, unittest
 from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
 from fastapi import HTTPException
-from circuit_breaker import main
+from . import main
 
 class TestCircuitBreaker(unittest.TestCase):
     
