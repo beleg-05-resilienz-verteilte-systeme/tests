@@ -1,0 +1,33 @@
+= Resilienz- und Fehlertoleranz-Patterns
+
+Dieses Repository enthält Beispiele für verschiedene Patterns, die in modernen Systemen zur Erhöhung der Resilienz und Fehlertoleranz verwendet werden. Jedes Unterverzeichnis enthält ein vollständiges Beispiel für ein spezifisches Pattern, inklusive Anleitungen zur Nutzung und API-Dokumentation.
+
+== Enthaltene Patterns
+
+1. <<circuit-breaker,Circuit Breaker>>
+2. <<fallback-strategy,Fallback Strategy>>
+3. <<retry-pattern,Retry Pattern>>
+
+== Circuit Breaker
+
+<<circuit-breaker>>
+
+Ein Circuit Breaker schützt Anwendungen vor wiederholten Fehlern bei externen Anfragen. Weitere Details und Nutzungshinweise findest du in der Dokumentation des Beispiels:
+
+link:circuit_breaker/README.adoc[Circuit Breaker Beispiel Dokumentation]
+
+== Fallback Strategy
+
+<<fallback-strategy>>
+
+Die Fallback-Strategie bietet alternative Daten, wenn ein primärer Service nicht verfügbar ist. Details zu diesem Pattern findest du in der Dokumentation des Beispiels:
+
+link:fallback_strategy/README.adoc[Fallback Strategy Beispiel Dokumentation]
+
+== Retry Pattern
+
+<<retry-pattern>>
+
+Das Retry Pattern implementiert eine automatische Wiederholungslogik für fehlgeschlagene Anfragen. Mehr Informationen findest du in der Dokumentation des Beispiels:
+
+link:retry_pattern/README.adoc[Retry Pattern Beispiel Dokumentation]
