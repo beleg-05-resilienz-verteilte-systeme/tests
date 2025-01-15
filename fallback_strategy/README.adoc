@@ -35,6 +35,13 @@ docker run -d -p 82:8000 --name fallback_strategy_app \
   fallback_strategy
 ----
 
+=== Tests Durchführen
+
+[source,bash]
+----
+docker run fallback_strategy:latest pytest -v
+----
+
 == Beispiele für API-Aufrufe
 
 **Erfolgreiche Anfrage**  

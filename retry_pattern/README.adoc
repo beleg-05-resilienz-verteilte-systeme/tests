@@ -42,6 +42,13 @@ docker run -d -p 83:8000 --name retry_pattern_app \
   retry_pattern
 ----
 
+=== Tests Durchführen
+
+[source,bash]
+----
+docker run retry_pattern:latest pytest -v
+----
+
 == Beispiele für API-Aufrufe
 
 **Erfolgreiche Anfrage**  

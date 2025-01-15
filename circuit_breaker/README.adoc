@@ -32,6 +32,13 @@ docker build -t circuit_breaker .
 docker run -d -p 81:8000 --name circuit_breaker-app -e MAX_FAILURES=5 -e RESET_TIMEOUT=15 -e EXTERNAL_SERVICE_URL="http://example.com" circuit_breaker
 ----
 
+=== Tests Durchführen
+
+[source,bash]
+----
+docker run circuit_breaker-app:latest pytest -v
+----
+
 == Beispiele für API-Aufrufe
 
 **Erfolgreiche Anfrage**  
