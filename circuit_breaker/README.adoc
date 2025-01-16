@@ -36,7 +36,7 @@ docker run -d -p 81:8000 --name circuit_breaker-app -e MAX_FAILURES=5 -e RESET_T
 
 [source,bash]
 ----
-docker run circuit_breaker-app:latest pytest -v
+docker run circuit_breaker:latest pytest -v
 ----
 
 == Beispiele für API-Aufrufe

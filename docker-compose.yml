@@ -8,7 +8,7 @@ services:
     ports:
       - "81:8000"
     environment:
-      - EXTERNAL_SERVICE_URL=http://test-app:8000/
+      - EXTERNAL_SERVICE_URL=http://test-app:8000/data
       - MAX_FAILURES=3
       - RESET_TIMEOUT=10
 
@@ -19,7 +19,23 @@ services:
     ports:
       - "82:8000"
     environment:
-      - EXTERNAL_SERVICE_URL=http://test-app:8000/
+      - EXTERNAL_SERVICE_URL=http://test-app:8000/data
+
+  fallback-strategy:
+    build: 
+      context: ./fallback_strategy
+    container_name: fallback_strategy-app
+    ports:
+      - "83:8000"
+    environment:
+      - EXTERNAL_SERVICE_URL=http://test-app:8000/data
+
+  test:
+    build: 
+      context: ./test
+    container_name: test-app
+    ports:
+      - "80:8000"
 
 networks:
   default:

@@ -39,8 +39,14 @@ def fetch_data():
 
 @app.get("/get-data")
 def get_data():
-    data = fetch_data()
-    return {
-        "success": True,
-        "data": data
-    }
+    
+    try: 
+        data = fetch_data()
+
+    except RetryError as e:
+        raise HTTPException(status_code = 503, detail=f"Max number of retries reached: {e}")
+    else:
+        return {
+            "success": True,
+            "data": data
+        }

@@ -54,7 +54,7 @@ class TestRetryPattern(unittest.TestCase):
         # Simulate the external service returning 500 errors
         mock_get.side_effect = HTTPException(status_code = 500, detail = "Internal Server Error")
 
-        with self.assertRaises(RetryError):
-            self.client.get("/get-data/")
+        response = self.client.get("/get-data/")
 
         self.assertEqual(mock_get.call_count, self.stop_after_attempt)
+        self.assertEqual(response.status_code, 503)
